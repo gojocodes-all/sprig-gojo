@@ -160,13 +160,25 @@ bun test          # fuzzy engine tests
 bun run test:unit # vitest unit tests
 ```
 
-### Docker
+### Containers
+
+The root `Dockerfile` builds the Astro application image. Verify it with the
+same command used by CI:
 
 ```bash
-docker compose up
+docker build -t sprig-ci .
 ```
 
-This starts the Astro site (port 9996), yjs-client, and yjs-signaling-server.
+The checked-in Compose file is scoped to the collaborative-editing services:
+
+```bash
+docker compose up --build
+```
+
+This starts `yjs-client` and `yjs-signaling-server` using `.env`; it does
+not start the Astro site. Compose publishes their container ports dynamically,
+so use `docker compose ps` to see the allocated host ports. Run `bun dev`
+separately for the website at <http://localhost:4321>.
 
 ### Engine Development
 
