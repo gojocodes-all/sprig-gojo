@@ -70,8 +70,21 @@ Run the checks relevant to the files you changed:
 
 ```bash
 bun run build      # Astro production build
-bun run test:unit  # Vitest unit tests
+bun run test:unit --run # one-shot Vitest unit tests
 bun test           # fuzzy engine tests
+```
+
+Running `bun run test:unit` without `--run` starts Vitest's watch mode in an
+interactive terminal, which is useful while developing but is not a finite
+validation command.
+
+Engine changes also require the standalone package build because `engine/` has
+its own manifest and lockfile:
+
+```bash
+cd engine
+bun install --frozen-lockfile
+bun run build
 ```
 
 When changing the root container, also run:

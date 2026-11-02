@@ -396,20 +396,24 @@ Please make a pull request with any changes, or feel free to create an issue wit
 
 In a terminal, clone the repo and install packages:
 
-```
-$ git clone https://github.com/hackclub/sprig-engine/
-$ cd sprig-engine
-$ yarn install
+```bash
+git clone https://github.com/hackclub/sprig/
+cd sprig/engine
+bun install --frozen-lockfile
 ```
 
 Run the TypeScript build in watch mode:
 
-```
-$ yarn dev
+```bash
+bun run dev
 ```
 
 Generate this Markdown file's table of contents:
 
+```bash
+bun run toc
 ```
-$ yarn toc
-```
+
+Use `bun run build` for a finite TypeScript build. When an engine change also
+affects the Sprig website or editor, return to the repository root and run
+`bun run test:unit --run` followed by `bun run build`.
