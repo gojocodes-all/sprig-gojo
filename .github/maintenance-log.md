@@ -1,5 +1,30 @@
 # Maintenance log
 
+## 2026-11-02 — Correct the engine contribution workflow
+
+- **Rationale:** The README said all engine code lived in a separate repository
+  and instructed contributors to link that clone into the site. The application
+  actually imports the checked-in `engine/src` tree directly. The engine guide
+  also still used the retired standalone repository and Yarn, while both the
+  root and engine now commit Bun lockfiles. Unit-test guidance did not distinguish
+  interactive Vitest watch mode from a finite validation run.
+- **Files changed:** `README.md` now links the checked-in engine, documents its
+  direct integration with the site, and provides root and standalone validation
+  commands. `CONTRIBUTING.md` distinguishes watch mode from one-shot unit tests
+  and includes the engine package build. `engine/README.md` uses the current
+  repository layout and Bun commands. This log records the maintenance decision.
+- **Validation:** Verified every command against the root and engine
+  `package.json` files and both Bun lockfiles; traced direct imports from
+  `src/` into `engine/src`; checked the unit-test and production-build workflows;
+  checked all changed relative links and `git diff --check`. The pull request's
+  hosted workflows are the authoritative Bun test and build validation because
+  Bun is not installed in the local runner.
+- **Risk:** Low. Documentation only. Application behavior, engine source,
+  dependencies, lockfiles, CI configuration, public APIs, stored data, firmware,
+  and deployment settings are unchanged.
+- **Rollback:** Revert the pull request's squash commit to restore the former
+  separate-repository, linking, Yarn, and undifferentiated test instructions.
+
 ## 2026-10-26 — Make game metadata parsing whitespace-tolerant
 
 - **Rationale:** The production build rejected

@@ -1,6 +1,6 @@
 # 🍃 Hack Club Sprig 🍃
 
-**[💻 Online Editor: Make a game](https://sprig.hackclub.com/editor)** | **[👀 Gallery: Find games](https://sprig.hackclub.com/gallery)** | **[🕸 Landing Page](https://sprig.hackclub.com)** | **[🎮 Firmware](https://github.com/hackclub/sprig/tree/main/firmware/spade)** | **[👾 Engine](https://github.com/hackclub/sprig-engine)**
+**[💻 Online Editor: Make a game](https://sprig.hackclub.com/editor)** | **[👀 Gallery: Find games](https://sprig.hackclub.com/gallery)** | **[🕸 Landing Page](https://sprig.hackclub.com)** | **[🎮 Firmware](https://github.com/hackclub/sprig/tree/main/firmware/spade)** | **[👾 Engine](./engine/)**
 
 [Sprig](https://sprig.hackclub.com) is a game console where **every user is a creator**. It can only be obtained by building a tile-based game in the [web-based game editor](https://sprig.hackclub.com/editor) and shipping it in the [community gallery](https://sprig.hackclub.com/gallery). It's made by [Hack Club](https://hackclub.com).
 
@@ -156,8 +156,9 @@ To start the dev server, run `bun dev` and visit <http://localhost:4321> in your
 ### Running Tests
 
 ```bash
-bun test          # fuzzy engine tests
-bun run test:unit # vitest unit tests
+bun test                # fuzzy engine tests
+bun run test:unit       # Vitest in watch mode in an interactive terminal
+bun run test:unit --run # one-shot Vitest run for validation
 ```
 
 ### Containers
@@ -182,26 +183,32 @@ separately for the website at <http://localhost:4321>.
 
 ### Engine Development
 
-All *engine code* (responsible for running games, playing tunes, etc.) is in a different repo: <https://github.com/hackclub/sprig-engine/>.
+The standalone Sprig engine is checked into [`engine/`](./engine/) and the site
+imports its source directly. Changes to game execution, tunes, rendering, or the
+public engine API should therefore be made in this repository rather than linked
+from a separate clone.
 
-If you want to work on the engine and test out your changes in the context of this repo, you'll want to use a feature called linking.
-
-First set up the engine repo:
-
-```bash
-git clone https://github.com/hackclub/sprig-engine/
-cd sprig-engine
-bun install
-bun link
-```
-
-Then, in this website's repo:
+From the repository root, install the site dependencies and run the checks that
+exercise the engine in the application:
 
 ```bash
-bun link sprig
+bun install --frozen-lockfile
+bun run test:unit --run
+bun run build
 ```
 
-Now, run `bun dev` in the engine repo to start the TypeScript build process.
+The standalone package has its own manifest and lockfile. To compile that
+package independently:
+
+```bash
+cd engine
+bun install --frozen-lockfile
+bun run build
+```
+
+Use `bun run dev` from `engine/` when you want its TypeScript compiler to rebuild
+on every change. See the [engine README](./engine/README.md) for its exports and
+package-specific contribution commands.
 
 ## Acknowledgements
 
